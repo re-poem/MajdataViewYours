@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1608,6 +1607,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   noteSpeed: 7
   touchSpeed: 7.5
+  smoothSlideAnime: 0
   starEach: {fileID: 21300000, guid: 18b858f24d67a4341ab427db18c00991, type: 3}
   tapPrefab: {fileID: 7955322054321000439, guid: 97d5979fe9de8fd4198fcafd1ba2d433,
     type: 3}
@@ -3597,7 +3597,7 @@ PrefabInstance:
     - target: {fileID: 4239088390834088340, guid: c1701d28c8a13d74a90a9e4dea169092,
         type: 3}
       propertyPath: m_Name
-      value: Firework
+      value: FireworkEffect
       objectReference: {fileID: 0}
     - target: {fileID: 4239088390834088340, guid: c1701d28c8a13d74a90a9e4dea169092,
         type: 3}
