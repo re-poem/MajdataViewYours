@@ -34,23 +34,26 @@ internal enum SimaiNoteType
 
 internal class SimaiNote
 {
-    public double holdTime = 0d;
-    public bool isBreak = false;
-    public bool isEx = false;
-    public bool isFakeRotate = false;
-    public bool isForceStar = false;
-    public bool isHanabi = false;
-    public bool isSlideBreak = false;
-    public bool isSlideNoHead = false;
+    public double holdTime;
+    public bool isBreak;
+    public bool isEx;
+    public bool isFakeRotate;
+    public bool isForceStar;
+    public bool isHanabi;
+    public bool isSlideBreak;
+    public bool isSlideNoHead;
+    public bool isMute;
 
     public string noteContent; //used for star explain
     public SimaiNoteType noteType;
 
-    public double slideStartTime = 0d;
-    public double slideTime = 0d;
+    public double slideStartTime;
+    public double slideTime;
 
     public int startPosition = 1; //键位（1-8）
     public char touchArea = ' ';
+
+    public string customSkin; //自定义皮肤文件名（Skin文件夹内）（为NULL时默认）
 }
 
 internal class EditRequestjson

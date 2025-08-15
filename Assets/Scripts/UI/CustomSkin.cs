@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class CustomSkin : MonoBehaviour
 {
+    public string path = new DirectoryInfo(Application.dataPath).Parent.FullName + "/Skin/";
+
     public Sprite Tap;
     public Sprite Tap_Each;
     public Sprite Tap_Break;
