@@ -5,6 +5,8 @@ using UnityEngine;
 public class TouchHoldDrop : NoteLongDrop
 {
     public bool isFirework;
+    public bool isEach;
+
     public GameObject tapEffect;
     public GameObject judgeEffect;
 
@@ -13,6 +15,7 @@ public class TouchHoldDrop : NoteLongDrop
     public SpriteRenderer boarder;
     public Sprite[] TouchHoldSprite = new Sprite[5];
     public Sprite TouchPointSprite;
+    public Sprite TouchPointEachSprite;
 
     public GameObject[] fans;
     public SpriteMask mask;
@@ -24,6 +27,9 @@ public class TouchHoldDrop : NoteLongDrop
     private float moveDuration;
 
     private float wholeDuration;
+
+    public char areaPosition;
+    public int startPosition;
 
     Sprite[] judgeText;
 
@@ -53,7 +59,17 @@ public class TouchHoldDrop : NoteLongDrop
 
         for (var i = 0; i < 4; i++) fansSprite[i].sprite = TouchHoldSprite[i];
         fansSprite[5].sprite = TouchHoldSprite[4]; // TouchHold Border
-        fansSprite[4].sprite = TouchPointSprite;
+        if (isEach)
+        {
+            fansSprite[4].sprite = TouchPointEachSprite;
+        }
+        else
+        {
+            fansSprite[4].sprite = TouchPointSprite;
+        }
+
+        transform.position = GetAreaPos(startPosition, areaPosition);
+
 
         SetfanColor(new Color(1f, 1f, 1f, 0f));
         mask.enabled = false;
@@ -217,11 +233,47 @@ public class TouchHoldDrop : NoteLongDrop
         }
 
         if (float.IsNaN(distance)) distance = 0f;
-
+        if (distance == 0f)
+        {
+            holdEffect.SetActive(true);
+            holdEffect.transform.position = transform.position;
+        }
         for (var i = 0; i < 4; i++)
         {
             var pos = (0.226f + distance) * GetAngle(i);
-            fans[i].transform.position = pos;
+            fans[i].transform.localPosition = pos;
+        }
+    }
+
+    Vector3 GetAreaPos(int index, char area)
+    {
+        /// <summary>
+        /// AreaDistance: 
+        /// C:   0
+        /// E:   3.1
+        /// B:   2.21
+        /// A,D: 4.8
+        /// </summary>
+        if (area == 'C') return Vector3.zero;
+        if (area == 'B')
+        {
+            var angle = (-index * (Mathf.PI / 4)) + ((Mathf.PI * 5) / 8);
+            return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * 2.3f;
+        }
+        if (area == 'A')
+        {
+            var angle = (-index * (Mathf.PI / 4)) + ((Mathf.PI * 5) / 8);
+            return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * 4.1f;
+        }
+        if (area == 'E')
+        {
+            var angle = (-index * (Mathf.PI / 4)) + ((Mathf.PI * 6) / 8);
+            return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * 3.0f;
+        }
+        if (area == 'D')
+        {
+            var angle = (-index * (Mathf.PI / 4)) + ((Mathf.PI * 6) / 8);
+            return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * 4.1f;
         }
     }
     private void OnDestroy()
@@ -300,6 +352,7 @@ public class TouchHoldDrop : NoteLongDrop
     {
         base.PlayHoldEffect();
         boarder.sprite = touchHoldBoard;
+        return Vector3.zero;
     }
     void PlayJudgeEffect(JudgeType judgeResult)
     {
