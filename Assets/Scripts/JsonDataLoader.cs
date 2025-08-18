@@ -650,24 +650,27 @@ public class JsonDataLoader : MonoBehaviour
                         NDCompo.isFirework = note.isHanabi;
                         NDCompo.areaPosition = note.touchArea;
                         NDCompo.startPosition = note.startPosition;
-                        NDCompo.TouchPointEachSprite = customSkin.TouchPoint_Each;
-
+                        
                         if (timing.noteList.Count > 1) NDCompo.isEach = true;
 
                         if (string.IsNullOrEmpty(note.customSkin))
                         {
                             Array.Copy(customSkin.TouchHold, NDCompo.TouchHoldSprite, 5);
                             NDCompo.TouchPointSprite = customSkin.TouchPoint;
+                            NDCompo.TouchPointEachSprite = customSkin.TouchPoint_Each;
                         }
                         else
                         {
                             Sprite[] touchHold = new Sprite[5];
-                            for (var j = 0; j < 4; j++) 
-                                touchHold[i] = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_" + j)));
+                            touchHold[0] = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_0")));
+                            touchHold[1] = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_1")));
+                            touchHold[2] = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_2")));
+                            touchHold[3] = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_3")));
                             touchHold[4] = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_border")));
 
-                            Array.Copy(customSkin.TouchHold, NDCompo.TouchHoldSprite, 5);
+                            Array.Copy(touchHold, NDCompo.TouchHoldSprite, 5);
                             NDCompo.TouchPointSprite = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_point")));
+                            NDCompo.TouchPointEachSprite = SpriteLoader.LoadSpriteFromFile(Path.Combine(customSkin.path, note.customSkin.Insert(note.customSkin.Length - 4, "_point_each")));
                         }
                     }
                     else if (note.noteType == SimaiNoteType.Touch)

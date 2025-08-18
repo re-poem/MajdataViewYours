@@ -237,6 +237,7 @@ public class TouchHoldDrop : TouchHoldBase
             var pos = (0.226f + distance) * GetAngle(i);
             fans[i].transform.localPosition = pos;
         }
+        Debug.Log(fansSprite[5].sprite.texture.width);
     }
 
     Vector3 GetAreaPos(int index, char area)
