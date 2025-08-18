@@ -275,6 +275,7 @@ public class TouchHoldDrop : NoteLongDrop
             var angle = (-index * (Mathf.PI / 4)) + ((Mathf.PI * 6) / 8);
             return new Vector3(Mathf.Cos(angle), Mathf.Sin(angle)) * 4.1f;
         }
+        return Vector3.zero;
     }
     private void OnDestroy()
     {
@@ -352,7 +353,6 @@ public class TouchHoldDrop : NoteLongDrop
     {
         base.PlayHoldEffect();
         boarder.sprite = touchHoldBoard;
-        return Vector3.zero;
     }
     void PlayJudgeEffect(JudgeType judgeResult)
     {
