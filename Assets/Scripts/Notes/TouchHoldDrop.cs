@@ -1,15 +1,10 @@
-﻿using Assets.Scripts.Types;
+﻿using Assets.Scripts;
+using Assets.Scripts.Types;
 using System;
 using UnityEngine;
 #nullable enable
-public class TouchHoldDrop : NoteLongDrop
+public class TouchHoldDrop : TouchHoldBase
 {
-    public bool isFirework;
-    public bool isEach;
-
-    public GameObject tapEffect;
-    public GameObject judgeEffect;
-
     public Sprite touchHoldBoard;
     public Sprite touchHoldBoard_Miss;
     public SpriteRenderer boarder;
@@ -18,6 +13,7 @@ public class TouchHoldDrop : NoteLongDrop
     public Sprite TouchPointEachSprite;
 
     public GameObject[] fans;
+
     public SpriteMask mask;
     private readonly SpriteRenderer[] fansSprite = new SpriteRenderer[6];
     private float displayDuration;
@@ -27,11 +23,6 @@ public class TouchHoldDrop : NoteLongDrop
     private float moveDuration;
 
     private float wholeDuration;
-
-    public char areaPosition;
-    public int startPosition;
-
-    Sprite[] judgeText;
 
     // Start is called before the first frame update
     private void Start()
@@ -72,10 +63,13 @@ public class TouchHoldDrop : NoteLongDrop
 
 
         SetfanColor(new Color(1f, 1f, 1f, 0f));
+
+        mask.backSortingOrder = fansSprite[5].sortingOrder - 1;
+        mask.frontSortingOrder = fansSprite[5].sortingOrder;
         mask.enabled = false;
 
         sensor = GameObject.Find("Sensors")
-                                   .transform.GetChild(16)
+                                   .transform.GetChild((int)GetSensor())
                                    .GetComponent<Sensor>();
         manager = GameObject.Find("Sensors")
                                 .GetComponent<SensorManager>();
@@ -83,7 +77,7 @@ public class TouchHoldDrop : NoteLongDrop
                                  .GetComponent<InputManager>();
         var customSkin = GameObject.Find("Outline").GetComponent<CustomSkin>();
         judgeText = customSkin.JudgeText;
-        inputManager.BindSensor(Check, SensorType.C);
+        inputManager.BindSensor(Check, GetSensor());
     }
     void Check(object sender, InputEventArgs arg)
     {
@@ -100,8 +94,8 @@ public class TouchHoldDrop : NoteLongDrop
             Judge();
             if (isJudged)
             {
-                inputManager.UnbindSensor(Check, SensorType.C);
-                objectCounter.NextTouch(SensorType.C);
+                inputManager.UnbindSensor(Check, GetSensor());
+                objectCounter.NextTouch(GetSensor());
             }
         }
     }
@@ -160,7 +154,7 @@ public class TouchHoldDrop : NoteLongDrop
             {
                 case AutoPlayMode.Enable:
                     if (!isJudged)
-                        objectCounter.NextTouch(SensorType.C);
+                        objectCounter.NextTouch(GetSensor());
                     judgeResult = JudgeType.Perfect;
                     isJudged = true;
                     PlayHoldEffect();
@@ -172,7 +166,7 @@ public class TouchHoldDrop : NoteLongDrop
                 case AutoPlayMode.Random:
                     if (!isJudged)
                     {
-                        objectCounter.NextTouch(SensorType.C);
+                        objectCounter.NextTouch(GetSensor());
                         judgeResult = (JudgeType)UnityEngine.Random.Range(1, 14);
                         isJudged = true;
                     }
@@ -193,7 +187,7 @@ public class TouchHoldDrop : NoteLongDrop
             else if (!timeProvider.isStart) // 忽略暂停
                 return;
 
-            var on = inputManager.CheckSensorStatus(SensorType.C, SensorStatus.On);
+            var on = inputManager.CheckSensorStatus(GetSensor(), SensorStatus.On);
             if (on)
                 PlayHoldEffect();
             else
@@ -206,9 +200,9 @@ public class TouchHoldDrop : NoteLongDrop
         {
             judgeDiff = 316.667f;
             judgeResult = JudgeType.Miss;
-            inputManager.UnbindSensor(Check, SensorType.C);
+            inputManager.UnbindSensor(Check, GetSensor());
             isJudged = true;
-            objectCounter.NextTouch(SensorType.C);
+            objectCounter.NextTouch(GetSensor());
         }
     }
     // Update is called once per frame
@@ -235,7 +229,7 @@ public class TouchHoldDrop : NoteLongDrop
         if (float.IsNaN(distance)) distance = 0f;
         if (distance == 0f)
         {
-            holdEffect.SetActive(true);
+            //holdEffect.SetActive(true);
             holdEffect.transform.position = transform.position;
         }
         for (var i = 0; i < 4; i++)
@@ -338,13 +332,13 @@ public class TouchHoldDrop : NoteLongDrop
         print($"TouchHold: {MathF.Round(percent * 100, 2)}%\nTotal Len : {MathF.Round(realityHT * 1000, 2)}ms");
         objectCounter.ReportResult(this, result);
         if (!isJudged)
-            objectCounter.NextTouch(SensorType.C);
+            objectCounter.NextTouch(GetSensor());
         if (isFirework && result != JudgeType.Miss)
         {
             fireworkEffect.SetTrigger("Fire");
             firework.transform.position = transform.position;
         }
-        inputManager.UnbindSensor(Check, SensorType.C);
+        inputManager.UnbindSensor(Check, GetSensor());
         manager.SetSensorOff(sensor.Type, guid);
         PlayJudgeEffect(result);
     }
@@ -361,10 +355,19 @@ public class TouchHoldDrop : NoteLongDrop
         var judgeObj = obj.transform.GetChild(0);
         var flObj = _obj.transform.GetChild(0);
 
-        judgeObj.transform.position = new Vector3(0, -0.6f, 0);
-        flObj.transform.position = new Vector3(0, -1.08f, 0);
-        flObj.GetChild(0).transform.rotation = Quaternion.Euler(Vector3.zero);
-        judgeObj.GetChild(0).transform.rotation = Quaternion.Euler(Vector3.zero);
+        if (sensor.Group != SensorGroup.C)
+        {
+            judgeObj.transform.position = GetPosition(-0.46f);
+            flObj.transform.position = GetPosition(-0.92f);
+        }
+        else
+        {
+            judgeObj.transform.position = new Vector3(0, -0.6f, 0);
+            flObj.transform.position = new Vector3(0, -1.08f, 0);
+        }
+
+        flObj.GetChild(0).transform.rotation = GetRoation();
+        judgeObj.GetChild(0).transform.rotation = GetRoation();
         var anim = obj.GetComponent<Animator>();
 
         var effects = GameObject.Find("NoteEffects");
@@ -417,6 +420,19 @@ public class TouchHoldDrop : NoteLongDrop
     {
         base.StopHoldEffect();
         boarder.sprite = touchHoldBoard_Miss;
+    }
+    /// <summary>
+    /// 获取当前坐标指定距离的坐标
+    /// <para>方向：原点</para>
+    /// </summary>
+    /// <param name="magnitude"></param>
+    /// <param name="distance"></param>
+    /// <returns></returns>
+    Vector3 GetPosition(float distance)
+    {
+        var d = transform.position.magnitude;
+        var ratio = MathF.Max(0, d + distance) / d;
+        return transform.position * ratio;
     }
     private Vector3 GetAngle(int index)
     {

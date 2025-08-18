@@ -49,8 +49,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -135,8 +133,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -221,8 +217,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -307,8 +301,6 @@ SpriteMask:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -335,15 +327,14 @@ SpriteMask:
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 3b4060a5b8c39a84886b03d91d541a79, type: 3}
   m_MaskAlphaCutoff: 0
-  m_FrontSortingLayerID: 0
-  m_BackSortingLayerID: 0
-  m_FrontSortingLayer: 0
-  m_BackSortingLayer: 0
+  m_FrontSortingLayerID: 90033427
+  m_BackSortingLayerID: 90033427
+  m_FrontSortingLayer: 5
+  m_BackSortingLayer: 5
   m_FrontSortingOrder: 0
   m_BackSortingOrder: 0
-  m_IsCustomRangeActive: 0
+  m_IsCustomRangeActive: 1
   m_SpriteSortPoint: 0
-  m_MaskSource: 0
 --- !u!1 &4570065832111625927
 GameObject:
   m_ObjectHideFlags: 0
@@ -393,8 +384,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -479,8 +468,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -565,8 +552,6 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -653,14 +638,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6839bc41b7edde469c9fc7c4c009e2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPosition: 0
   time: 5
   noteSortOrder: 0
-  LastFor: 1
   speed: 0.8
+  isEach: 0
+  LastFor: 1
+  holdEffect: {fileID: 692072832370815118, guid: 0bed8d7e7c63e184ab46c11a9653a6e2,
+    type: 3}
   isFirework: 0
   tapEffect: {fileID: 314035496818238881, guid: 3edd06a81e4ec844bb281d728dce49b2,
-    type: 3}
-  holdEffect: {fileID: 692072832370815118, guid: 0bed8d7e7c63e184ab46c11a9653a6e2,
     type: 3}
   judgeEffect: {fileID: 2214473122963414705, guid: e863ee95f9b63c044a47510ad82daf33,
     type: 3}
@@ -675,6 +662,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   TouchPointSprite: {fileID: 0}
+  TouchPointEachSprite: {fileID: 0}
   fans:
   - {fileID: 4570065831800169648}
   - {fileID: 4570065832418346541}
@@ -683,3 +671,4 @@ MonoBehaviour:
   - {fileID: 4570065831502088326}
   - {fileID: 4570065831695336318}
   mask: {fileID: 4570065831974175032}
+  areaPosition: 360

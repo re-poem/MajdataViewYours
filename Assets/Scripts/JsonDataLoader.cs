@@ -601,7 +601,7 @@ public class JsonDataLoader : MonoBehaviour
                     else if (note.noteType == SimaiNoteType.TouchHold)
                     {
                         var GOnote = Instantiate(touchHoldPrefab, notes.transform);
-                        noteManager.AddTouch(GOnote, touchIndex[SensorType.C]++);
+                        noteManager.AddTouch(GOnote, touchIndex[TouchHoldBase.GetSensor(note.touchArea, note.startPosition)]++);
                         var NDCompo = GOnote.GetComponent<TouchHoldDrop>();
 
                         // note的图层顺序
