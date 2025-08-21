@@ -13,6 +13,8 @@ namespace Assets.Scripts.Types
         public bool IsClick => OldStatus == SensorStatus.Off && Status == SensorStatus.On;
 
     }
+
+    //外键
     public class Button
     {
         public KeyCode BindingKey { get; set; }

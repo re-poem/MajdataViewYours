@@ -48,13 +48,15 @@ public class InputManager : MonoBehaviour
         var count = Input.touchCount;
         CheckButton();
 
-        if (Input.GetKeyDown(KeyCode.Home))
-        {
-            if (Mode == AutoPlayMode.Disable)
-                Mode = AutoPlayMode.Enable;
-            else
-                Mode++;
-        }
+        //现在可以直接在菜单中更改
+        //if (Input.GetKeyDown(KeyCode.Home))
+        //{
+        //    if (Mode == AutoPlayMode.Disable)
+        //        Mode = AutoPlayMode.Enable;
+        //    else
+        //        Mode++;
+        //}
+
         if (Input.GetMouseButton(0))
             PositionHandle(-1, Input.mousePosition);
         else
