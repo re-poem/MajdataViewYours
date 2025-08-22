@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CustomSkin : MonoBehaviour
 {
-    public string path = new DirectoryInfo(Application.dataPath).Parent.FullName + "/Skin/";
+    public string path;
 
     public Sprite Tap;
     public Sprite Tap_Each;
@@ -57,7 +57,7 @@ public class CustomSkin : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        var path = new DirectoryInfo(Application.dataPath).Parent.FullName + "/Skin/";
+        path = new DirectoryInfo(Application.dataPath).Parent.FullName + "/Skin/";
         Outline = gameObject.GetComponent<SpriteRenderer>();
         print(path);
 
