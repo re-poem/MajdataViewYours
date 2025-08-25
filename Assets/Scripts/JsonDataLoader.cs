@@ -23,6 +23,7 @@ public class JsonDataLoader : MonoBehaviour
     public GameObject starPrefab;
     public GameObject touchHoldPrefab;
     public GameObject touchPrefab;
+    public GameObject cmdPrefab;
     public GameObject eachLine;
     public GameObject starLine;
     public GameObject notes;
@@ -727,8 +728,35 @@ public class JsonDataLoader : MonoBehaviour
                     }
                     else if (note.noteType == SimaiNoteType.Slide)
                     {
-                        note.noteContent = note.noteContent.Replace("u", ""); // 忽略isUnplayable
+                        note.noteContent = note.noteContent.Replace("u", "").Replace("m", "").Replace("c", ""); // 忽略isUnplayable,isMute,customSkin
                         InstantiateStarGroup(timing, note, i, lastNoteTime); // 星星组
+                    }
+                    else if (note.noteType == SimaiNoteType.NoneOrCmd)
+                    {
+                        string[] cmd = note.noteContent[2..].ToLower().Split('.');
+                        if (cmd[0] == "auto")
+                        {
+                            var GOnote = Instantiate(cmdPrefab);
+                            var NDCompo = GOnote.GetComponent<CmdDrop>();
+                            NDCompo.time = (float)timing.time;
+                            switch (cmd[1])
+                            {
+                                case "enable":
+                                    NDCompo.Handler = () => { InputManager.Mode = AutoPlayMode.Enable; };
+                                    break;
+                                case "djauto":
+                                    NDCompo.Handler = () => { InputManager.Mode = AutoPlayMode.DJAuto; };
+                                    break;
+                                case "random":
+                                    NDCompo.Handler = () => { InputManager.Mode = AutoPlayMode.Random; };
+                                    break;
+                                case "disable":
+                                    NDCompo.Handler = () => { InputManager.Mode = AutoPlayMode.Disable; };
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
                     }
                 }
 

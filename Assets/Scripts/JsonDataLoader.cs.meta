@@ -3,7 +3,28 @@ guid: efd1419b6ac8fa144a80ef32faf2b84e
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - starEach: {instanceID: 0}
+  - tapPrefab: {instanceID: 0}
+  - holdPrefab: {instanceID: 0}
+  - starPrefab: {instanceID: 0}
+  - touchHoldPrefab: {instanceID: 0}
+  - touchPrefab: {instanceID: 0}
+  - cmdPrefab: {instanceID: 0}
+  - eachLine: {instanceID: 0}
+  - starLine: {instanceID: 0}
+  - notes: {instanceID: 0}
+  - star_slidePrefab: {instanceID: 0}
+  - breakMaterial: {instanceID: 0}
+  - BreakShine: {instanceID: 0}
+  - JudgeBreakShine: {instanceID: 0}
+  - HoldShine: {instanceID: 0}
+  - diffText: {instanceID: 0}
+  - levelText: {instanceID: 0}
+  - titleText: {instanceID: 0}
+  - artistText: {instanceID: 0}
+  - designText: {instanceID: 0}
+  - cardImage: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -45,7 +45,7 @@ public class NoteManager : MonoBehaviour
             else if (touch != null)
                 touchOrder.Add(touch.gameObject, touchIndex[touch.GetSensor()]++);
             else if(touchHold != null)
-                touchOrder.Add(touchHold.gameObject, touchIndex[SensorType.C]++);
+                touchOrder.Add(touchHold.gameObject, touchIndex[touchHold.GetSensor()]++);
 
             notes.Add(child.gameObject);
         }

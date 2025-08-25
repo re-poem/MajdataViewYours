@@ -8,6 +8,9 @@ onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
+	"last_search.3BE40471" = "ref:Assets/Prefab/Tap_01.prefab"
+	"OpenInspectorPreview.3BE40471" = "0"
+	"currentGroup.3BE40471" = "all"
 }
 providers = {
 	log = {
@@ -59,6 +62,7 @@ providers = {
 objectSelectors = {
 }
 recentSearches = [
+	"ref:Assets/Prefab/Tap_01.prefab"
 ]
 searchItemFavorites = [
 ]
