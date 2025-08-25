@@ -11,7 +11,7 @@
 - Main Programmer: bbben([Twitter](https://twitter.com/bbben132329)), [Moying-moe](https://github.com/Moying-moe/maimaiMuriDetector)
 - Mirroring: [Wh1tyEnd](https://github.com/Wh1tyEnd)
 - Hanabi Effect: 青山散人
-- *Special thanks*: Simai developed by [Celeca](https://twitter.com/formiku39854)
+- *Special thanks*: Simai developed by [Celeca](https://twitter.com/formiku39854), MaiMuriDX Developed by [Minepig](https://github.com/Minepig)
 
 ## 语言切换方法/言語切り替え方法/How to change language
 
