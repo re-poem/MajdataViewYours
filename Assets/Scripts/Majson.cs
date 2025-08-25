@@ -43,6 +43,7 @@ internal class SimaiNote
     public bool isSlideBreak;
     public bool isSlideNoHead;
     public bool isMute;
+    public bool isUnplayable;
 
     public string noteContent; //used for star explain
     public SimaiNoteType noteType;

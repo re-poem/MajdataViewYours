@@ -417,6 +417,7 @@ public class HoldDrop : NoteLongDrop
                 sprRenderer.sprite = eachHoldOnSpr;
             else
                 sprRenderer.sprite = holdOnSpr;
+            if (judgeResult == JudgeType.Miss)
         }
     }
     protected override void StopHoldEffect()

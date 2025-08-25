@@ -589,6 +589,7 @@ public class JsonDataLoader : MonoBehaviour
                         NDCompo.time = (float)timing.time;
                         NDCompo.startPosition = note.startPosition;
                         NDCompo.speed = noteSpeed * timing.HSpeed;
+                        NDCompo.isUnplayable = note.isUnplayable;
                     }
                     else if (note.noteType == SimaiNoteType.Hold)
                     {
@@ -633,6 +634,7 @@ public class JsonDataLoader : MonoBehaviour
                         NDCompo.speed = noteSpeed * timing.HSpeed;
                         NDCompo.isEX = note.isEx;
                         NDCompo.isBreak = note.isBreak;
+                        NDCompo.isUnplayable = note.isUnplayable;
                     }
                     else if (note.noteType == SimaiNoteType.TouchHold)
                     {
@@ -650,7 +652,8 @@ public class JsonDataLoader : MonoBehaviour
                         NDCompo.isFirework = note.isHanabi;
                         NDCompo.areaPosition = note.touchArea;
                         NDCompo.startPosition = note.startPosition;
-                        
+                        NDCompo.isUnplayable = note.isUnplayable;
+
                         if (timing.noteList.Count > 1) NDCompo.isEach = true;
 
                         if (string.IsNullOrEmpty(note.customSkin))
@@ -720,9 +723,11 @@ public class JsonDataLoader : MonoBehaviour
                         NDCompo.speed = touchSpeed * timing.HSpeed;
                         NDCompo.isFirework = note.isHanabi;
                         NDCompo.GroupInfo = null;
+                        NDCompo.isUnplayable = note.isUnplayable;
                     }
                     else if (note.noteType == SimaiNoteType.Slide)
                     {
+                        note.noteContent = note.noteContent.Replace("u", ""); // 忽略isUnplayable
                         InstantiateStarGroup(timing, note, i, lastNoteTime); // 星星组
                     }
                 }
@@ -1092,6 +1097,7 @@ public class JsonDataLoader : MonoBehaviour
         }
         subSlides.ForEach(s =>
         {
+            s.isUnplayable = note.isUnplayable;
             s.Initialize();
             totalSlideLen += s.GetSlideLength();
         });
@@ -1227,6 +1233,7 @@ public class JsonDataLoader : MonoBehaviour
         NDCompo.time = (float)timing.time;
         NDCompo.startPosition = note.startPosition;
         NDCompo.speed = noteSpeed * timing.HSpeed;
+        NDCompo.isUnplayable = note.isUnplayable;
 
         WifiCompo.isJustR = detectJustType(note.noteContent, out endPos);
         WifiCompo.endPosition = endPos;
@@ -1236,6 +1243,7 @@ public class JsonDataLoader : MonoBehaviour
         WifiCompo.time = (float)note.slideStartTime;
         WifiCompo.LastFor = (float)note.slideTime;
         WifiCompo.sortIndex = slideLayer;
+        WifiCompo.isUnplayable = note.isUnplayable;
         slideLayer -= SLIDE_AREA_STEP_MAP["wifi"].Last();
         //slideLayer += 5;
 
@@ -1250,6 +1258,7 @@ public class JsonDataLoader : MonoBehaviour
             noteManager.AddNote(GOnote, noteIndex[note.startPosition]++);
         // note的图层顺序
         NDCompo.noteSortOrder = noteSortOrder;
+        NDCompo.isUnplayable = note.isUnplayable;
         noteSortOrder -= NOTE_LAYER_COUNT[note.noteType];
 
         if (string.IsNullOrEmpty(note.customSkin))
@@ -1398,6 +1407,7 @@ public class JsonDataLoader : MonoBehaviour
         SliCompo.LastFor = (float)note.slideTime;
         //SliCompo.sortIndex = -7000 + (int)((lastNoteTime - timing.time) * -100) + sort * 5;
         SliCompo.sortIndex = slideLayer;
+        SliCompo.isUnplayable = note.isUnplayable;
         slideLayer -= SLIDE_AREA_STEP_MAP[slideShape].Last();
         //slideLayer += 5;
         return slide;
