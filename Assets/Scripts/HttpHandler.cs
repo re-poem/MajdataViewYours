@@ -1,13 +1,15 @@
-﻿using System;
+﻿using Assets.Scripts.Types;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using Assets.Scripts.Types;
-using Newtonsoft.Json;
+using Unity.Mathematics;
 using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class HttpHandler : MonoBehaviour
 {
@@ -47,21 +49,6 @@ public class HttpHandler : MonoBehaviour
         var multTouchHandler = GameObject.Find("MultTouchHandler").GetComponent<MultTouchHandler>();
         var objectCounter = GameObject.Find("ObjectCounter").GetComponent<ObjectCounter>();
 
-        foreach (var layer in SortingLayer.layers)
-        {
-            var bg_path = Path.Combine(new DirectoryInfo(Application.dataPath).Parent.FullName, "Skin", "bg_" + layer.name + ".mp4");
-            if (File.Exists(bg_path))
-            {
-                var GOvideo = Instantiate(CSLVPPrefab);
-                var manager = GOvideo.GetComponent<CSLVPManager>();
-                manager.LoadFromPath(bg_path);
-                var sr = GOvideo.GetComponent<SpriteRenderer>();
-                sr.sortingLayerID = layer.id;
-                //sr.sortingOrder = int.Parse(cmd[4]);
-                cslvps.Add(GOvideo);
-            }
-        }
-
         InputManager.Mode = (AutoPlayMode)(int)data.editorPlayMethod;
 
         switch(data.control)
@@ -80,11 +67,7 @@ public class HttpHandler : MonoBehaviour
                     bgManager.LoadBGFromPath(new FileInfo(data.jsonPath).DirectoryName, data.audioSpeed);
                     bgCover.color = new Color(0f, 0f, 0f, data.backgroundCover);
 
-                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager))
-                        {
-                            manager.playSpeed = data.audioSpeed;
-                            manager.PlayVideo();
-                        }
+                    CSLVPInit(data.audioSpeed);
                     //GameObject.Find("Notes").GetComponent<NoteManager>().Refresh();
                 }
                 break;
@@ -102,12 +85,7 @@ public class HttpHandler : MonoBehaviour
                     bgCover.color = new Color(0f, 0f, 0f, data.backgroundCover);
                     bgManager.PlaySongDetail();
 
-                    
-                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager))
-                        {
-                            manager.playSpeed = data.audioSpeed;
-                            manager.PlayVideo();
-                        }
+                    CSLVPInit(data.audioSpeed);
                     //GameObject.Find("Notes").GetComponent<NoteManager>().Refresh();
                 }
                 break;
@@ -131,11 +109,7 @@ public class HttpHandler : MonoBehaviour
                     bgManager.PlaySongDetail();
                     GameObject.Find("CanvasButtons").SetActive(false);
 
-                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager))
-                        {
-                            manager.playSpeed = data.audioSpeed;
-                            manager.PlayVideo();
-                        }
+                    CSLVPInit(data.audioSpeed); 
                     //GameObject.Find("Notes").GetComponent<NoteManager>().Refresh();
                 }
                 break;
@@ -162,6 +136,37 @@ public class HttpHandler : MonoBehaviour
                     foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager)) manager.ContinueVideo(data.audioSpeed);
                     break;
                 }
+        }
+    }
+
+    private void CSLVPInit(float dataSpeed)
+    {
+        var videoPath = Path.Combine(new DirectoryInfo(Application.dataPath).Parent.FullName, "Skin", "Videos");
+        var files = Directory.GetFiles(
+            videoPath,
+            "*.mp4",
+            SearchOption.TopDirectoryOnly);
+        foreach (var layer in SortingLayer.layers)
+        {
+            foreach (var file in files)
+            {
+                if (int.TryParse(Path.GetFileNameWithoutExtension(file).Split('_')[2], out int sortingOrder))
+                {
+                    var bg_path = Path.Combine(videoPath, "bg_" + layer.name + "_" + sortingOrder + ".mp4");
+                    if (File.Exists(bg_path))
+                    {
+                        var GOvideo = Instantiate(CSLVPPrefab);
+                        var sr = GOvideo.GetComponent<SpriteRenderer>();
+                        sr.sortingLayerID = layer.id;
+                        sr.sortingOrder = sortingOrder;
+                        var manager = GOvideo.GetComponent<CSLVPManager>();
+                        manager.playSpeed = dataSpeed;
+                        manager.LoadFromPath(bg_path);
+                        cslvps.Add(GOvideo);
+
+                    }
+                }
+            }
         }
     }
 

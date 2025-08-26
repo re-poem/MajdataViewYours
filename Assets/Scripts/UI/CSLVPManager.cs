@@ -49,11 +49,6 @@ public class CSLVPManager : MonoBehaviour
             videoPlayer.playbackSpeed = playSpeed;
     }
 
-    public void PlayVideo()
-    {
-        videoPlayer.Play();
-    }
-
     public void PauseVideo()
     {
         videoPlayer.Pause();
