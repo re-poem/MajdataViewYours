@@ -2420,6 +2420,8 @@ MonoBehaviour:
     type: 3}
   cmdPrefab: {fileID: 4274040033216598210, guid: c22bf94034dda9542b299f60ca651fb6,
     type: 3}
+  CSLVPPrefab: {fileID: 4368317407685430360, guid: 08d94f39c003965469c69f768ae3f906,
+    type: 3}
   eachLine: {fileID: 278292873598720211, guid: 54e5879f47df2a248b91a3e19dfe8599, type: 3}
   starLine: {fileID: 7599635926637845735, guid: 170f7f7a95689ea479fc7270d6ebf074,
     type: 3}

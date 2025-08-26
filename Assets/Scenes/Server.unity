@@ -217,6 +217,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ec24e3a037ac7a4cadf6a6476770876, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CSLVPPrefab: {fileID: 4368317407685430360, guid: 08d94f39c003965469c69f768ae3f906,
+    type: 3}
+  cslvps: []
 --- !u!4 &357793931
 Transform:
   m_ObjectHideFlags: 0
@@ -354,6 +357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abfe99402ae61564d9ebdee3bd92ba2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: 
   Tap: {fileID: 0}
   Tap_Each: {fileID: 0}
   Tap_Break: {fileID: 0}

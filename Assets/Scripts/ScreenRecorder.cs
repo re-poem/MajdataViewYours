@@ -49,6 +49,7 @@ public class ScreenRecorder : MonoBehaviour
     {
         var timeProvider = GameObject.Find("AudioTimeProvider").GetComponent<AudioTimeProvider>();
         var bgManager = GameObject.Find("Background").GetComponent<BGManager>();
+        
         if (Screen.width % 2 != 0 || Screen.height % 2 != 0)
         {
             GameObject.Find("ErrText").GetComponent<Text>().text =
@@ -129,5 +130,7 @@ public class ScreenRecorder : MonoBehaviour
 
         timeProvider.isStart = false;
         bgManager.PauseVideo();
+        var cslvps = GameObject.FindGameObjectsWithTag("CSLVP");
+        foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager)) manager.PauseVideo();
     }
 }

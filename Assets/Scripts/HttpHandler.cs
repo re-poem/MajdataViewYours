@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Assets.Scripts.Types;
 using Newtonsoft.Json;
+using UnityEditor.Profiling.Memory.Experimental;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +16,9 @@ public class HttpHandler : MonoBehaviour
     private Task listen;
     private string request = "";
 
+    public GameObject CSLVPPrefab;
+
+    public List<GameObject> cslvps = new();
 
     private void Start()
     {
@@ -42,6 +47,21 @@ public class HttpHandler : MonoBehaviour
         var multTouchHandler = GameObject.Find("MultTouchHandler").GetComponent<MultTouchHandler>();
         var objectCounter = GameObject.Find("ObjectCounter").GetComponent<ObjectCounter>();
 
+        foreach (var layer in SortingLayer.layers)
+        {
+            var bg_path = Path.Combine(new DirectoryInfo(Application.dataPath).Parent.FullName, "Skin", "bg_" + layer.name + ".mp4");
+            if (File.Exists(bg_path))
+            {
+                var GOvideo = Instantiate(CSLVPPrefab);
+                var manager = GOvideo.GetComponent<CSLVPManager>();
+                manager.LoadFromPath(bg_path);
+                var sr = GOvideo.GetComponent<SpriteRenderer>();
+                sr.sortingLayerID = layer.id;
+                //sr.sortingOrder = int.Parse(cmd[4]);
+                cslvps.Add(GOvideo);
+            }
+        }
+
         InputManager.Mode = (AutoPlayMode)(int)data.editorPlayMethod;
 
         switch(data.control)
@@ -59,6 +79,12 @@ public class HttpHandler : MonoBehaviour
 
                     bgManager.LoadBGFromPath(new FileInfo(data.jsonPath).DirectoryName, data.audioSpeed);
                     bgCover.color = new Color(0f, 0f, 0f, data.backgroundCover);
+
+                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager))
+                        {
+                            manager.playSpeed = data.audioSpeed;
+                            manager.PlayVideo();
+                        }
                     //GameObject.Find("Notes").GetComponent<NoteManager>().Refresh();
                 }
                 break;
@@ -75,6 +101,13 @@ public class HttpHandler : MonoBehaviour
                     bgManager.LoadBGFromPath(new FileInfo(data.jsonPath).DirectoryName, data.audioSpeed);
                     bgCover.color = new Color(0f, 0f, 0f, data.backgroundCover);
                     bgManager.PlaySongDetail();
+
+                    
+                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager))
+                        {
+                            manager.playSpeed = data.audioSpeed;
+                            manager.PlayVideo();
+                        }
                     //GameObject.Find("Notes").GetComponent<NoteManager>().Refresh();
                 }
                 break;
@@ -97,23 +130,38 @@ public class HttpHandler : MonoBehaviour
                     bgCover.color = new Color(0f, 0f, 0f, data.backgroundCover);
                     bgManager.PlaySongDetail();
                     GameObject.Find("CanvasButtons").SetActive(false);
+
+                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager))
+                        {
+                            manager.playSpeed = data.audioSpeed;
+                            manager.PlayVideo();
+                        }
                     //GameObject.Find("Notes").GetComponent<NoteManager>().Refresh();
                 }
                 break;
             case EditorControlMethod.Pause:
-                timeProvider.isStart = false;
-                bgManager.PauseVideo();
-                break;
+                {
+                    timeProvider.isStart = false;
+                    bgManager.PauseVideo();
+                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager)) manager.PauseVideo();
+                    break;
+                }
             case EditorControlMethod.Stop:
-                screenRecorder.StopRecording();
-                timeProvider.ResetStartTime();
-                IsReloding = true;
-                SceneManager.LoadScene(1);
-                break;
+                {
+                    screenRecorder.StopRecording();
+                    timeProvider.ResetStartTime();
+                    IsReloding = true;
+                    SceneManager.LoadScene(1);
+                    cslvps.Clear();
+                    break;
+                }
             case EditorControlMethod.Continue:
-                timeProvider.SetStartTime(data.startAt, data.startTime, data.audioSpeed);
-                bgManager.ContinueVideo(data.audioSpeed);
-                break;
+                {
+                    timeProvider.SetStartTime(data.startAt, data.startTime, data.audioSpeed);
+                    bgManager.ContinueVideo(data.audioSpeed);
+                    foreach (var cslvp in cslvps) if (cslvp.TryGetComponent<CSLVPManager>(out var manager)) manager.ContinueVideo(data.audioSpeed);
+                    break;
+                }
         }
     }
 
